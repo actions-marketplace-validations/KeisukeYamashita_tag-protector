@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {Inputs, Merger, Strategy} from './merger'
+import {Inputs, Protector} from './protector'
 import {inspect} from 'util'
 
 async function run(): Promise<void> {
@@ -7,34 +7,18 @@ async function run(): Promise<void> {
     const [owner, repo] = core.getInput('repository').split('/')
 
     const inputs: Inputs = {
-      checkStatus: core.getInput('checkStatus') === 'true',
-      comment: core.getInput('comment'),
-      ignoreLabels:
-        core.getInput('ignoreLabels') === ''
-          ? []
-          : core.getInput('ignoreLabels').split(','),
-      failStep: core.getInput('failStep') === 'true',
-      intervalSeconds:
-        Number(core.getInput('intervalSeconds', {required: true})) * 1000,
-      labels:
-        core.getInput('labels') === ''
-          ? []
-          : core.getInput('labels').split(','),
-      owner,
-      repo,
-      pullRequestNumber: Number(
-        core.getInput('pullRequestNumber', {required: true})
-      ),
-      sha: core.getInput('sha', {required: true}),
-      strategy: core.getInput('strategy', {required: true}) as Strategy,
+      rule: core.getInput('rule', {required: true}),
+      deleteTag: core.getInput('deleteTag') === 'true',
+      failWorkflow: core.getInput('failWorkflow') === 'true',
       token: core.getInput('token', {required: true}),
-      timeoutSeconds: Number(core.getInput('timeoutSeconds', {required: true}))
+      owner,
+      repo
     }
 
     core.debug(`Inputs: ${inspect(inputs)}`)
 
-    const merger = new Merger(inputs)
-    await merger.merge()
+    const protector = new Protector(inputs)
+    await protector.reject()
   } catch (error) {
     core.setFailed(error.message)
   }

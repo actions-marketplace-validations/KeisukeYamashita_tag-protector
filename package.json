@@ -1,7 +1,7 @@
 {
-  "name": "auto-pull-request-merge",
-  "version": "1.0.1",
-  "description": "Merge PR automatically",
+  "name": "tag-protector",
+  "version": "1.0.0",
+  "description": "GitHub Actions that deletes tags that doesn't follow the rules",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",

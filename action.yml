@@ -1,51 +1,23 @@
-name: 'auto-pull-request-merge'
-description: 'Auto PR Merge'
+name: 'tag-protector'
+description: "Rejects tag that doesn't follow the rule"
 author: 'KeisukeYamashita'
 inputs:
-  checkStatus: 
-    required: false
-    description: 'Check all status before merge'
+  rule: 
+    required: true
+    description: 'Format of the tag should be'
     default: 'true'
-  comment:
+  deleteTag:
     required: false
-    description: 'Comment before merge'
-    default: ''
-  intervalSeconds:
-    required: false
-    description: 'Seconds between the check'
-    default: '0.1'
-  failStep:
-    required: false
-    description: 'Fail the step if the PR is not found or merged'
+    description: 'Delete the tag or not'
     default: 'true'
-  labels:
+  failWorkflow:
     required: false
-    description: 'Comma seperated labes that target pull request should have'
-    default: ''
-  ignoreLabels:
-    required: false
-    description: 'Comma seperated labes that target pull request should not have'
-    default: ''
+    description: 'Fail the workflow if not tag match the rule'
+    default: 'false'
   repository:
     required: false
     description: 'The GitHub repository containing the issue or pr.'
     default: ${{ github.repository }}
-  pullRequestNumber:
-    required: false
-    description: 'Number of the pull request'
-    default: ${{ github.event.pull_request.number }}
-  sha:
-    required: false
-    description: 'SHA of the pull request commit'
-    default: ${{ github.event.pull_request.head.sha }}
-  strategy:
-    required: false
-    description: 'Merge strategy'
-    default: 'merge'
-  timeoutSeconds:
-    required: false
-    description: 'Seconds to timeout'
-    default: '60'
   token:
     required: false
     description: 'Credential to access to the repo to post the comment'
@@ -54,5 +26,5 @@ runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
-  icon: 'git-merge'
-  color: 'green'
+  icon: 'stop-circle'
+  color: 'red'
